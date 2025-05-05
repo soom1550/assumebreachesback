@@ -1,43 +1,41 @@
 document.getElementById('scan-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    
+
     // إظهار شريط التحميل
-    document.getElementById('loading-bar').style.display = 'block'; // إظهار شريط التحميل
-    document.getElementById('result-box').style.display = 'none';  // إخفاء النتيجة القديمة
+    document.getElementById('loading-bar').style.display = 'block';
+    document.getElementById('result-box').style.display = 'none';
 
     const fileInput = document.getElementById('file-upload');
-    const urlInput = document.getElementById('url'); // تأكد من أن id هنا يتطابق مع id الموجود في HTML
+    const urlInput = document.getElementById('url');
     const formData = new FormData();
 
-    // التحقق من وجود ملف تم تحميله
-    if (fileInput.files.length > 0) {
+    const hasFile = fileInput.files.length > 0;
+    const url = urlInput.value.trim();
+    const hasUrl = url !== "";
+
+    // التحقق من أن المستخدم أدخل إما ملف أو رابط
+    if (!hasFile && !hasUrl) {
+        alert("يرجى إدخال رابط أو تحميل ملف");
+        document.getElementById('loading-bar').style.display = 'none';
+        return;
+    }
+
+    if (hasFile) {
         formData.append('file', fileInput.files[0]);
     }
 
-    // التحقق من وجود رابط مدخل
-    const url = urlInput.value.trim();
-    if (url) {
+    if (hasUrl) {
         formData.append('url', url);
     }
 
-    // تأكد من أنه إما تم تحميل ملف أو إدخال رابط
-    if (fileInput.files.length === 0 && url === "") {
-        alert("يرجى إدخال رابط أو تحميل ملف");
-        document.getElementById('loading-bar').style.display = 'none'; // إخفاء شريط التحميل إذا لم يتم إدخال شيء
-        return;  // إيقاف تنفيذ الكود في حال عدم وجود رابط أو ملف
-    }
-
-    // إجراء الفحص عبر API
-    axios.post('https://assumebreachesback.onrender.com/scan', formData)  // تأكد من أن الرابط صحيح هنا
+    // إرسال البيانات إلى السيرفر
+    axios.post('https://assumebreachesback.onrender.com/scan', formData)
         .then(function(response) {
-            // إخفاء شريط التحميل بعد الانتهاء
-            document.getElementById('loading-bar').style.display = 'none'; // إخفاء شريط التحميل
+            document.getElementById('loading-bar').style.display = 'none';
 
-            // عرض النتيجة
-            const resultData = response.data.data || {}; // الحصول على البيانات من الاستجابة
-            const stats = resultData.attributes ? resultData.attributes.stats : {}; // التأكد من وجود إحصائيات
+            const resultData = response.data.data || {};
+            const stats = resultData.attributes?.stats || {};
 
-            // تنسيق عرض الإحصائيات
             const statsHtml = `
                 <div class="stat-item"><strong>Malicious:</strong> ${stats.malicious || 0}</div>
                 <div class="stat-item"><strong>Suspicious:</strong> ${stats.suspicious || 0}</div>
@@ -45,20 +43,16 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
                 <div class="stat-item"><strong>Harmless:</strong> ${stats.harmless || 0}</div>
                 <div class="stat-item"><strong>Timeout:</strong> ${stats.timeout || 0}</div>
             `;
-            
-            // تحديث النتيجة في الصفحة بدون رابط VirusTotal
+
             document.getElementById('result-content').innerHTML = `
-                <p><strong>الحالة:</strong> ${resultData.attributes ? resultData.attributes.status : 'غير محدد'}</p>
+                <p><strong>الحالة:</strong> ${resultData.attributes?.status || 'غير محدد'}</p>
                 <p><strong>الإحصائيات:</strong></p>
                 <div class="stats-container">${statsHtml}</div>
             `;
-            document.getElementById('result-box').style.display = 'block'; // إظهار النتيجة بعد الفحص
+            document.getElementById('result-box').style.display = 'block';
         })
         .catch(function(error) {
-            // إخفاء شريط التحميل بعد الخطأ
-            document.getElementById('loading-bar').style.display = 'none'; // إخفاء شريط التحميل
-
-            // عرض الخطأ
+            document.getElementById('loading-bar').style.display = 'none';
             document.getElementById('result-content').innerHTML = `حدث خطأ: ${error.message}`;
             document.getElementById('result-box').style.display = 'block';
         });
