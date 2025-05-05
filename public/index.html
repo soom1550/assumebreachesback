@@ -53,14 +53,21 @@
     }
 
     button {
-      background-color: #0d6efd;
+      background-color: #7b2cbf;
       color: white;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
+      font-family: 'Cairo', sans-serif;
       cursor: pointer;
       width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #602296;
+
     }
 
     #loading-bar {
@@ -69,6 +76,7 @@
       height: 10px;
       background-color: #ccc;
       margin-top: 20px;
+      border-radius: 10px;
     }
 
     .progress {
@@ -86,8 +94,8 @@
 
     #result-box {
       display: none;
-      margin-top: 20px;
-      text-align: right;
+      margin-top: 10px;
+      text-align: center;
     }
 
     .hidden {
