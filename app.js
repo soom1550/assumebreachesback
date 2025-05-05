@@ -16,9 +16,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // إعداد المسار لفحص الرابط أو الملف
-app.post('/scan', async (req, res) => {
-  const { file, url } = req.body; // افترضنا أن الملف أو الرابط يُرسل في جسم الطلب
+app.post('/scan', upload.single('file'), async (req, res) => {
   const apiKey = process.env.VIRUSTOTAL_API_KEY; // استخدم المفتاح من المتغير البيئي
+  const url = req.body.url; // افترضنا أن الملف أو الرابط يُرسل في جسم الطلب
+  const file = req.file;
+  
+  
 
   if (file) {
     try {
