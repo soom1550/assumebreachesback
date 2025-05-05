@@ -1,57 +1,154 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>افترض الاختراق</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> <!-- تأكد من ربط ملف CSS -->
-    <!-- تحميل مكتبة axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&family=Tajawal:wght@300;400;600&display=swap" rel="stylesheet">
-    <img src="https://www.micromindercs.com/ui/assets/image/topcs_riyadh_6.webp" alt="صورة من Microminder Cyber Security" width="600" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>افترض الاختراق</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&family=Tajawal:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+      background-image: url('https://www.micromindercs.com/ui/assets/image/topcs_riyadh_6.webp');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+    }
 
+    .container {
+      background-color: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header, footer, h1, h2, p, label {
+      color: #fff;
+      text-align: center;
+    }
+
+    .scan-box {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      text-align: right;
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0d6efd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    #loading-bar {
+      display: none;
+      width: 100%;
+      height: 10px;
+      background-color: #ccc;
+      margin-top: 20px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 100%;
+      background-color: #0d6efd;
+      animation: loading 2s infinite;
+    }
+
+    @keyframes loading {
+      0% { width: 0%; }
+      50% { width: 50%; }
+      100% { width: 100%; }
+    }
+
+    #result-box {
+      display: none;
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .stats-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-item {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    footer {
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>افترض الاختراق</h1>
-            <p>لبناء دفاع استباقي وفعّال</p>
-        </header>
+  <div class="container">
+    <header>
+      <h1>افترض الاختراق</h1>
+      <p>لبناء دفاع استباقي وفعّال</p>
+    </header>
 
-        <div class="scan-box">
-            <h2>ادخل الرابط أو قم برفع الملف الذي ترغب في فحصه</h2>
-            <form id="scan-form" enctype="multipart/form-data">
-                <div class="input-group">
-                    <label for="url">أدخل الرابط:</label>
-                    <input type="text" id="url" placeholder="أدخل الرابط هنا" required>
-                </div>
-                <div class="input-group">
-                    <label for="file-upload">أو قم بتحميل الملف:</label>
-                    <input type="file" id="file-upload">
-                </div>
-                <button type="submit">
-                    <i class="fas fa-search"></i> ابدأ الفحص
-                </button>
-            </form>
+    <div class="scan-box">
+      <h2>ادخل الرابط أو قم برفع الملف الذي ترغب في فحصه</h2>
+      <form id="scan-form" enctype="multipart/form-data">
+        <div class="input-group">
+          <label for="url">أدخل الرابط:</label>
+          <input type="text" id="url" placeholder="أدخل الرابط هنا" />
         </div>
-
-        <div id="loading-bar" class="hidden">
-            <div class="progress"></div>
+        <div class="input-group">
+          <label for="file-upload">أو قم بتحميل الملف:</label>
+          <input type="file" id="file-upload" />
         </div>
-
-        <div id="result-box" class="hidden">
-            <h2>نتيجة الفحص:</h2>
-            <div id="result-content">
-                <!-- سيتم عرض النتيجة هنا -->
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; Seham Bahes 2025</p>
-        </footer>
+        <button type="submit">
+          <i class="fas fa-search"></i> ابدأ الفحص
+        </button>
+      </form>
     </div>
 
-    <script src="script.js"></script>
+    <div id="loading-bar">
+      <div class="progress"></div>
+    </div>
+
+    <div id="result-box">
+      <h2>نتيجة الفحص:</h2>
+      <div id="result-content"></div>
+    </div>
+
+    <footer>
+      <p>&copy; Seham Bahes 2025</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
