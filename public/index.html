@@ -59,8 +59,43 @@
       font-size: 1rem;
     }
 
+    /* تخصيص حقل رفع الملف */
+    input[type="file"] {
+      text-align: center;
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.2);
+      position: relative;
+      display: inline-block;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+
+    /* تخصيص النص "اختر الملف" */
+    input[type="file"]:before {
+      content: "اختر الملف";
+      color: #fff;
+      background-color: #28a745; /* اللون الأخضر الزاهي */
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+
+    input[type="file"]:hover:before {
+      background-color: #218838; /* اللون الأخضر الداكن عند المرور بالماوس */
+    }
+
     button {
-      background-color: #0d6efd;
+      background-color: #28a745; /* خلفية الزر الأخضر */
       color: white;
       padding: 10px 20px;
       border: none;
@@ -68,6 +103,10 @@
       font-size: 1rem;
       cursor: pointer;
       width: 100%;
+    }
+
+    button:hover {
+      background-color: #218838; /* خلفية الزر الأخضر الداكن عند المرور بالماوس */
     }
 
     #loading-bar {
@@ -133,7 +172,7 @@
           <input type="text" id="url" placeholder="أدخل الرابط هنا" />
         </div>
         <div class="input-group">
-          <label for="file-upload">أو قم بتحميل الملف:</label>
+          <label for="file-upload">أو قم بتحميل الملف</label>
           <input type="file" id="file-upload" />
         </div>
         <button type="submit">
@@ -147,7 +186,7 @@
     </div>
 
     <div id="result-box">
-      <h2>نتيجة الفحص:</h2>
+      <h2>نتيجة الفحص</h2>
       <div id="result-content"></div>
     </div>
 
