@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الروابط والملفات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- تأكد من ربط ملف CSS -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>اختبار الرابط</h1>
+            <p>أدخل الرابط الذي ترغب في فحصه</p>
+        </header>
+
+        <div class="scan-box">
+            <h2>ابدأ الفحص الآن</h2>
+            <form id="scan-form">
+                <div class="input-group">
+                    <label for="url">أدخل الرابط:</label>
+                    <input type="text" id="url" placeholder="أدخل الرابط هنا" required>
+                </div>
+                <button type="submit">
+                    <i class="fas fa-search"></i> ابدأ الفحص
+                </button>
+            </form>
+        </div>
+
+        <div id="loading-bar" class="hidden">
+            <div class="progress"></div>
+        </div>
+
+        <div id="result-box" class="hidden">
+            <h2>نتيجة الفحص:</h2>
+            <div id="result-content">
+                <!-- سيتم عرض النتيجة هنا -->
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

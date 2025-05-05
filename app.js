@@ -3,6 +3,8 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const app = express();
 
+app.use(express.static('public'));
+
 // إعداد body-parser لمعالجة البيانات
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
