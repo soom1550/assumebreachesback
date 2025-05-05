@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>افترض الاختراق</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&family=Tajawal:wght@300;400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Tajawal', sans-serif;
       background-image: url('https://www.micromindercs.com/ui/assets/image/topcs_riyadh_6.webp');
       background-size: cover;
       background-repeat: no-repeat;
@@ -35,17 +35,17 @@
     header, footer, h1, h2, p, label {
       color: #fff;
       margin-bottom: 10px;
+      font-family: 'Cairo', sans-serif;
     }
 
     .scan-box {
       max-width: 600px;
       width: 100%;
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
 
     .input-group {
@@ -57,65 +57,55 @@
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      background-color: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      backdrop-filter: blur(4px);
-    }
-
-    input[type="text"]::placeholder {
-      color: #ccc;
-    }
-
-    /* تخصيص حقل رفع الملف */
-    input[type="file"] {
-      position: relative;
-      width: 100%;
-      padding: 20px;
-      border: 2px dashed #b085f5;
-      border-radius: 12px;
-      background-color: rgba(138, 43, 226, 0.2);
-      cursor: pointer;
-      color: #fff;
-      transition: background-color 0.3s ease;
-    }
-
-    input[type="file"]::-webkit-file-upload-button {
-      visibility: hidden;
-    }
-
-    input[type="file"]::before {
-      content: "اختر الملف";
-      color: #fff;
-      background-color: #7b2cbf;
-      border: none;
-      padding: 10px 20px;
       border-radius: 8px;
       font-size: 1rem;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    /* رفع الملف */
+    .file-upload-wrapper {
+      position: relative;
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .custom-file-label {
       display: inline-block;
+      padding: 12px 30px;
+      background-color: #7b2cbf;
+      color: white;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Cairo', sans-serif;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
 
-    input[type="file"]:hover::before {
+    .custom-file-label:hover {
       background-color: #9d4edd;
     }
 
-    button {
+    input[type="file"] {
+      display: none;
+    }
+
+    .submit-btn {
       background-color: #7b2cbf;
       color: white;
-      padding: 12px 20px;
+      padding: 14px 20px;
       border: none;
       border-radius: 10px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      font-family: 'Cairo', sans-serif;
       font-weight: bold;
       cursor: pointer;
       width: 100%;
+      margin-top: 20px;
       transition: background-color 0.3s ease;
     }
 
-    button:hover {
+    .submit-btn:hover {
       background-color: #9d4edd;
     }
 
@@ -125,14 +115,12 @@
       height: 10px;
       background-color: #ccc;
       margin-top: 20px;
-      border-radius: 5px;
-      overflow: hidden;
     }
 
     .progress {
       width: 100%;
       height: 100%;
-      background-color: #9d4edd;
+      background-color: #0d6efd;
       animation: loading 2s infinite;
     }
 
@@ -148,18 +136,9 @@
       text-align: center;
     }
 
-    #result-box h2 {
-      color: #d0b3ff;
-    }
-
-    .hidden {
-      display: none;
-    }
-
     footer {
       margin-top: 40px;
-      font-size: 0.9rem;
-      color: #aaa;
+      font-family: 'Cairo', sans-serif;
     }
   </style>
 </head>
@@ -177,11 +156,16 @@
           <label for="url">أدخل الرابط:</label>
           <input type="text" id="url" placeholder="أدخل الرابط هنا" />
         </div>
+
         <div class="input-group">
           <label for="file-upload">أو قم بتحميل الملف</label>
-          <input type="file" id="file-upload" />
+          <div class="file-upload-wrapper">
+            <label class="custom-file-label" for="file-upload">اختر الملف</label>
+            <input type="file" id="file-upload" />
+          </div>
         </div>
-        <button type="submit">
+
+        <button type="submit" class="submit-btn">
           <i class="fas fa-search"></i> ابدأ الفحص
         </button>
       </form>
@@ -201,6 +185,24 @@
     </footer>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById('scan-form');
+    const loadingBar = document.getElementById('loading-bar');
+    const resultBox = document.getElementById('result-box');
+    const resultContent = document.getElementById('result-content');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      loadingBar.style.display = 'block';
+      resultBox.style.display = 'none';
+
+      // Simulate scan delay
+      setTimeout(() => {
+        loadingBar.style.display = 'none';
+        resultBox.style.display = 'block';
+        resultContent.innerText = "تم الفحص بنجاح (محاكاة فقط)";
+      }, 2000);
+    });
+  </script>
 </body>
 </html>
