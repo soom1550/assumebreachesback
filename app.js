@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const path = require('path'); // لإعداد المسارات بشكل صحيح
+require('dotenv').config();  // تحميل المتغيرات من ملف .env
+
 const app = express();
 
 // إعداد خدمة الملفات الثابتة من مجلد 'public'
@@ -14,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // إعداد المسار لفحص الرابط أو الملف
 app.post('/scan', async (req, res) => {
   const { file, url } = req.body; // افترضنا أن الملف أو الرابط يُرسل في جسم الطلب
-  const apiKey = 'your_virustotal_api_key'; // ضع هنا مفتاح API من VirusTotal أو DeepAI
+  const apiKey = process.env.VIRUSTOTAL_API_KEY; // استخدم المفتاح من المتغير البيئي
 
   if (file) {
     try {
