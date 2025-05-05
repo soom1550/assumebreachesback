@@ -5,25 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>افترض الاختراق</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&family=Tajawal:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Tajawal', sans-serif;
+      font-family: 'Cairo', sans-serif;
       background-image: url('https://www.micromindercs.com/ui/assets/image/topcs_riyadh_6.webp');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
       background-attachment: fixed;
       color: #fff;
-      height: 100vh; /* ضمان أن الخلفية تملأ الشاشة */
+      height: 100vh;
     }
 
     .container {
       background-color: rgba(0, 0, 0, 0.6);
-      height: 100%; /* جعل الحاوية تغطي كامل الشاشة */
+      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -40,73 +40,83 @@
     .scan-box {
       max-width: 600px;
       width: 100%;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       text-align: center;
     }
 
-    input[type="text"], input[type="file"] {
+    input[type="text"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+
+    input[type="text"]::placeholder {
+      color: #ccc;
     }
 
     /* تخصيص حقل رفع الملف */
     input[type="file"] {
-      text-align: center;
-      color: #fff;
-      background-color: rgba(255, 255, 255, 0.2);
       position: relative;
-      display: inline-block;
-      padding: 10px;
-      border-radius: 5px;
+      width: 100%;
+      padding: 20px;
+      border: 2px dashed #b085f5;
+      border-radius: 12px;
+      background-color: rgba(138, 43, 226, 0.2);
+      cursor: pointer;
+      color: #fff;
+      transition: background-color 0.3s ease;
     }
 
     input[type="file"]::-webkit-file-upload-button {
       visibility: hidden;
     }
 
-    /* تخصيص النص "اختر الملف" */
-    input[type="file"]:before {
+    input[type="file"]::before {
       content: "اختر الملف";
       color: #fff;
-      background-color: #28a745; /* اللون الأخضر الزاهي */
+      background-color: #7b2cbf;
+      border: none;
       padding: 10px 20px;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: inline-block;
       cursor: pointer;
-      width: 100%;
-      text-align: center;
+      transition: background-color 0.3s ease;
     }
 
-    input[type="file"]:hover:before {
-      background-color: #218838; /* اللون الأخضر الداكن عند المرور بالماوس */
+    input[type="file"]:hover::before {
+      background-color: #9d4edd;
     }
 
     button {
-      background-color: #28a745; /* خلفية الزر الأخضر */
+      background-color: #7b2cbf;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 20px;
       border: none;
-      border-radius: 5px;
-      font-size: 1rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
       width: 100%;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #218838; /* خلفية الزر الأخضر الداكن عند المرور بالماوس */
+      background-color: #9d4edd;
     }
 
     #loading-bar {
@@ -115,12 +125,14 @@
       height: 10px;
       background-color: #ccc;
       margin-top: 20px;
+      border-radius: 5px;
+      overflow: hidden;
     }
 
     .progress {
       width: 100%;
       height: 100%;
-      background-color: #0d6efd;
+      background-color: #9d4edd;
       animation: loading 2s infinite;
     }
 
@@ -136,24 +148,18 @@
       text-align: center;
     }
 
+    #result-box h2 {
+      color: #d0b3ff;
+    }
+
     .hidden {
       display: none;
     }
 
-    .stats-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .stat-item {
-      background-color: rgba(255, 255, 255, 0.2);
-      padding: 10px;
-      border-radius: 5px;
-    }
-
     footer {
       margin-top: 40px;
+      font-size: 0.9rem;
+      color: #aaa;
     }
   </style>
 </head>
