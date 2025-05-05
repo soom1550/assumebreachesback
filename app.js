@@ -1,10 +1,12 @@
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const path = require('path'); // لإعداد المسارات بشكل صحيح
 require('dotenv').config();  // تحميل المتغيرات من ملف .env
 
 const app = express();
+const upload = multer();
 
 // إعداد خدمة الملفات الثابتة من مجلد 'public'
 app.use(express.static(path.join(__dirname, 'public')));
