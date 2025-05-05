@@ -6,7 +6,7 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
     document.getElementById('result-box').style.display = 'none';  // إخفاء النتيجة القديمة
 
     const fileInput = document.getElementById('file-upload');
-    const urlInput = document.getElementById('url-input');
+    const urlInput = document.getElementById('url'); // تعديل هنا
     const formData = new FormData();
 
     if (fileInput.files.length > 0) {
@@ -20,7 +20,7 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
     }
 
     // إجراء الفحص عبر API
-    axios.post('https://https://assumebreachesback.onrender.com', formData)
+    axios.post('https://assumebreachesback.onrender.com/scan', formData)  // تعديل هنا
         .then(function(response) {
             // إخفاء شريط التحميل بعد الانتهاء
             document.getElementById('loading-bar').style.display = 'none'; // إخفاء شريط التحميل
