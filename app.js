@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const path = require('path'); // لإعداد المسارات بشكل صحيح
 const app = express();
 
-app.use(express.static('public'));
+// إعداد خدمة الملفات الثابتة من مجلد 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
 // إعداد body-parser لمعالجة البيانات
 app.use(bodyParser.json());
