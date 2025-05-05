@@ -53,9 +53,13 @@
 
     label {
       display: block;
-      text-align: right;
+      text-align: center; /* توسيط النص */
       margin-bottom: 8px;
       font-weight: 500;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
     }
 
     input[type="text"],
@@ -65,7 +69,6 @@
       border: none;
       border-radius: 10px;
       font-size: 1rem;
-      margin-bottom: 20px;
       font-family: 'Cairo', sans-serif;
       box-sizing: border-box;
     }
@@ -77,7 +80,7 @@
 
     .file-upload-wrapper {
       position: relative;
-      margin-bottom: 20px;
+      width: 100%;
     }
 
     .custom-file-label {
@@ -85,6 +88,7 @@
       color: white;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      display: block;
       text-align: center;
     }
 
@@ -210,4 +214,6 @@
         resultContent.innerText = "تم الفحص بنجاح (محاكاة فقط)";
       }, 2000);
     });
-  </
+  </script>
+</body>
+</html>
