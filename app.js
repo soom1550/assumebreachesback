@@ -49,5 +49,5 @@ app.post('/scan', async (req, res) => {
 
 // تشغيل الخادم على المنفذ 3000
 app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+  console.log('Server is running on https://assumebreachesback.onrender.com');
 });
