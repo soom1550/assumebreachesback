@@ -18,37 +18,30 @@
       background-position: center;
       background-attachment: fixed;
       color: #fff;
-      height: 100vh; /* ضمان أن الخلفية تملأ الشاشة */
     }
 
     .container {
       background-color: rgba(0, 0, 0, 0.6);
-      height: 100%; /* جعل الحاوية تغطي كامل الشاشة */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+      min-height: 100vh;
       padding: 20px;
     }
 
     header, footer, h1, h2, p, label {
       color: #fff;
-      margin-bottom: 10px;
+      text-align: center;
     }
 
     .scan-box {
       max-width: 600px;
-      width: 100%;
+      margin: 0 auto;
       padding: 20px;
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
-      text-align: center;
     }
 
     .input-group {
       margin-bottom: 15px;
-      text-align: center;
+      text-align: right;
     }
 
     input[type="text"], input[type="file"] {
@@ -94,7 +87,7 @@
     #result-box {
       display: none;
       margin-top: 20px;
-      text-align: center;
+      text-align: right;
     }
 
     .hidden {
@@ -130,7 +123,7 @@
       <form id="scan-form" enctype="multipart/form-data">
         <div class="input-group">
           <label for="url">أدخل الرابط:</label>
-          <input type="text" id="url" placeholder="أدخل الرابط هنا" required />
+          <input type="text" id="url" placeholder="أدخل الرابط هنا" />
         </div>
         <div class="input-group">
           <label for="file-upload">أو قم بتحميل الملف:</label>
@@ -156,56 +149,6 @@
     </footer>
   </div>
 
-  <script>
-    const form = document.getElementById('scan-form');
-    const loadingBar = document.getElementById('loading-bar');
-    const resultBox = document.getElementById('result-box');
-    const resultContent = document.getElementById('result-content');
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      loadingBar.style.display = 'block';
-      resultBox.style.display = 'none';
-
-      const file = document.getElementById('file-upload').files[0];
-      const url = document.getElementById('url').value;
-
-      if (file) {
-        // إرسال الملف إلى الـ API للفحص
-        const formData = new FormData();
-        formData.append('file', file);
-
-        // استخدم API من فيروس توتال أو أي خدمة فحص أخرى
-        axios.post('API_URL_FOR_FILE_SCAN', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }).then(response => {
-          loadingBar.style.display = 'none';
-          resultBox.style.display = 'block';
-          resultContent.innerText = response.data.result || "تم الفحص بنجاح!";
-        }).catch(error => {
-          loadingBar.style.display = 'none';
-          resultBox.style.display = 'block';
-          resultContent.innerText = "حدث خطأ أثناء الفحص.";
-        });
-      } else if (url) {
-        // إرسال الرابط إلى الـ API للفحص
-        axios.post('API_URL_FOR_URL_SCAN', { url: url }).then(response => {
-          loadingBar.style.display = 'none';
-          resultBox.style.display = 'block';
-          resultContent.innerText = response.data.result || "تم الفحص بنجاح!";
-        }).catch(error => {
-          loadingBar.style.display = 'none';
-          resultBox.style.display = 'block';
-          resultContent.innerText = "حدث خطأ أثناء الفحص.";
-        });
-      } else {
-        loadingBar.style.display = 'none';
-        resultBox.style.display = 'block';
-        resultContent.innerText = "يرجى إدخال رابط أو رفع ملف.";
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
