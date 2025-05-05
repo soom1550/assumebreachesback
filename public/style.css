@@ -1,6 +1,6 @@
 /* إعدادات عامة */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Cairo', sans-serif;  /* تغيير الخط إلى "Cairo" أو "Tajawal" */
     background: #f4f4f9;
     margin: 0;
     padding: 0;
