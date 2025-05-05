@@ -34,8 +34,14 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
             document.getElementById('loading-bar').style.display = 'none'; // إخفاء شريط التحميل
 
             // عرض النتيجة
+            const resultData = response.data.data || {}; // الحصول على البيانات من الاستجابة
+            const stats = resultData.attributes ? resultData.attributes.stats : {}; // التأكد من وجود إحصائيات
+
             document.getElementById('result-content').innerHTML = `
-                <pre>${JSON.stringify(response.data, null, 2)}</pre>
+                <p><strong>الحالة:</strong> ${resultData.attributes ? resultData.attributes.status : 'غير محدد'}</p>
+                <p><strong>الإحصائيات:</strong></p>
+                <pre>${JSON.stringify(stats, null, 2)}</pre>
+                <a href="${resultData.links ? resultData.links.item : '#'}" target="_blank">عرض التفاصيل في VirusTotal</a>
             `;
             document.getElementById('result-box').style.display = 'block'; // إظهار النتيجة بعد الفحص
         })

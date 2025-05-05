@@ -3,11 +3,11 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
-const FormData = require('form-data'); // ✅ استيراد form-data
+const FormData = require('form-data');
 require('dotenv').config();
 
 const app = express();
-const upload = multer(); // ✅ إعداد multer لاستخدام الذاكرة (buffer)
+const upload = multer();
 
 // خدمة الملفات الثابتة
 app.use(express.static(path.join(__dirname, 'public')));
@@ -15,6 +15,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 // إعداد body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// دالة انتظار حتى انتهاء التحليل
+const waitForAnalysisToComplete = async (id, apiKey, maxAttempts = 10, delayMs = 2000) => {
+  for (let i = 0; i < maxAttempts; i++) {
+    const result = await axios.get(`https://www.virustotal.com/api/v3/analyses/${id}`, {
+      headers: { 'x-apikey': apiKey }
+    });
+
+    if (result.data.data.attributes.status === 'completed') {
+      return result.data;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+  }
+
+  throw new Error('Analysis timeout. Try again later.');
+};
 
 // مسار الفحص
 app.post('/scan', upload.single('file'), async (req, res) => {
@@ -25,7 +42,6 @@ app.post('/scan', upload.single('file'), async (req, res) => {
   if (file) {
     try {
       const form = new FormData();
-      // ✅ إضافة الملف باستخدام buffer واسم الملف
       form.append('file', file.buffer, file.originalname);
 
       const response = await axios.post('https://www.virustotal.com/api/v3/files', form, {
@@ -35,33 +51,27 @@ app.post('/scan', upload.single('file'), async (req, res) => {
         }
       });
 
-      res.json(response.data);
+      const analysisId = response.data.data.id;
+      const result = await waitForAnalysisToComplete(analysisId, apiKey);
+
+      res.json(result);
     } catch (error) {
       console.error('Error scanning file:', error.response?.data || error.message);
       res.status(500).json({ message: 'Error scanning file', error: error.message });
     }
   } else if (url) {
     try {
-      // ✅ ترميز الرابط كما تطلب API فايروس توتال
-      const encodedUrl = Buffer.from(url).toString('base64').replace(/=+$/, '');
-
-      const response = await axios.post(`https://www.virustotal.com/api/v3/urls`, `url=${url}`, {
+      const response = await axios.post('https://www.virustotal.com/api/v3/urls', `url=${url}`, {
         headers: {
           'x-apikey': apiKey,
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       });
 
-      // بعد الفحص نحصل على ID ونستخدمه لجلب التقرير
       const analysisId = response.data.data.id;
+      const result = await waitForAnalysisToComplete(analysisId, apiKey);
 
-      const result = await axios.get(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
-        headers: {
-          'x-apikey': apiKey
-        }
-      });
-
-      res.json(result.data);
+      res.json(result);
     } catch (error) {
       console.error('Error scanning URL:', error.response?.data || error.message);
       res.status(500).json({ message: 'Error scanning URL', error: error.message });
