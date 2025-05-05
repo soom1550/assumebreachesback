@@ -185,3 +185,36 @@ button:active {
 #loading-bar.hidden {
     display: none;
 }
+
+/* تنسيق إحصائيات الفحص */
+.stats-container {
+    text-align: left;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.stat-item {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.stat-item strong {
+    color: #4CAF50;
+}
+
+.stat-item span {
+    font-weight: bold;
+    color: #555;
+}
+
+/* تأثيرات عند مرور الماوس */
+.stat-item:hover {
+    background-color: #e0f7e0;
+    border-color: #4CAF50;
+    cursor: pointer;
+}

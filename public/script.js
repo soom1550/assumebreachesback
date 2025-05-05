@@ -37,11 +37,20 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
             const resultData = response.data.data || {}; // الحصول على البيانات من الاستجابة
             const stats = resultData.attributes ? resultData.attributes.stats : {}; // التأكد من وجود إحصائيات
 
+            // تنسيق عرض الإحصائيات
+            const statsHtml = `
+                <div class="stat-item"><strong>Malicious:</strong> ${stats.malicious || 0}</div>
+                <div class="stat-item"><strong>Suspicious:</strong> ${stats.suspicious || 0}</div>
+                <div class="stat-item"><strong>Undetected:</strong> ${stats.undetected || 0}</div>
+                <div class="stat-item"><strong>Harmless:</strong> ${stats.harmless || 0}</div>
+                <div class="stat-item"><strong>Timeout:</strong> ${stats.timeout || 0}</div>
+            `;
+            
+            // تحديث النتيجة في الصفحة بدون رابط VirusTotal
             document.getElementById('result-content').innerHTML = `
                 <p><strong>الحالة:</strong> ${resultData.attributes ? resultData.attributes.status : 'غير محدد'}</p>
                 <p><strong>الإحصائيات:</strong></p>
-                <pre>${JSON.stringify(stats, null, 2)}</pre>
-                <a href="${resultData.links ? resultData.links.item : '#'}" target="_blank">عرض التفاصيل في VirusTotal</a>
+                <div class="stats-container">${statsHtml}</div>
             `;
             document.getElementById('result-box').style.display = 'block'; // إظهار النتيجة بعد الفحص
         })
