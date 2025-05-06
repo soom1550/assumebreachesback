@@ -14,8 +14,8 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
     const hasUrl = url !== "";
 
     // التحقق من حجم الملف قبل الإرسال
-    if (hasFile && fileInput.files[0].size > 32 * 1024 * 1024) {
-        alert("الملف كبير جداً. الحد الأقصى المسموح به هو 32MB.");
+    if (hasFile && fileInput.files[0].size > 70 * 1024 * 1024) {
+        alert("الملف كبير جداً. الحد الأقصى المسموح به هو 70MB.");
         document.getElementById('loading-bar').style.display = 'none';
         return;
     }

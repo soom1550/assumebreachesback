@@ -7,7 +7,11 @@ const FormData = require('form-data');
 require('dotenv').config();
 
 const app = express();
-const upload = multer();
+
+// إعداد multer مع الحد الأقصى لحجم الملف
+const upload = multer({
+  limits: { fileSize: 70 * 1024 * 1024 } // الحد الأقصى 70MB
+});
 
 // خدمة الملفات الثابتة
 app.use(express.static(path.join(__dirname, 'public')));
@@ -41,9 +45,9 @@ app.post('/scan', upload.single('file'), async (req, res) => {
 
   if (file) {
     // فحص حجم الملف
-    if (file.size > 32 * 1024 * 1024) { // الحد الأقصى 32MB
+    if (file.size > 70 * 1024 * 1024) { // الحد الأقصى 70MB
       return res.status(400).json({
-        message: 'الملف أكبر من الحد المسموح (32MB). يرجى تحميل ملف أصغر.'
+        message: 'الملف أكبر من الحد المسموح (70MB). يرجى تحميل ملف أصغر.'
       });
     }
 
