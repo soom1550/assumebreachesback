@@ -13,6 +13,13 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
     const url = urlInput.value.trim();
     const hasUrl = url !== "";
 
+    // التحقق من حجم الملف قبل الإرسال
+    if (hasFile && fileInput.files[0].size > 32 * 1024 * 1024) {
+        alert("الملف كبير جداً. الحد الأقصى المسموح به هو 32MB.");
+        document.getElementById('loading-bar').style.display = 'none';
+        return;
+    }
+
     // التحقق من أن المستخدم أدخل إما ملف أو رابط
     if (!hasFile && !hasUrl) {
         alert("يرجى إدخال رابط أو تحميل ملف");
@@ -53,7 +60,9 @@ document.getElementById('scan-form').addEventListener('submit', function(event) 
         })
         .catch(function(error) {
             document.getElementById('loading-bar').style.display = 'none';
-            document.getElementById('result-content').innerHTML = `حدث خطأ: ${error.message}`;
+            document.getElementById('result-content').innerHTML = `
+                <strong>حدث خطأ:</strong> ${error.response?.data?.message || error.message}
+            `;
             document.getElementById('result-box').style.display = 'block';
         });
 });

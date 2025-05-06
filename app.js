@@ -40,6 +40,13 @@ app.post('/scan', upload.single('file'), async (req, res) => {
   const file = req.file;
 
   if (file) {
+    // فحص حجم الملف
+    if (file.size > 32 * 1024 * 1024) { // الحد الأقصى 32MB
+      return res.status(400).json({
+        message: 'الملف أكبر من الحد المسموح (32MB). يرجى تحميل ملف أصغر.'
+      });
+    }
+
     try {
       const form = new FormData();
       form.append('file', file.buffer, file.originalname);
@@ -57,7 +64,10 @@ app.post('/scan', upload.single('file'), async (req, res) => {
       res.json(result);
     } catch (error) {
       console.error('Error scanning file:', error.response?.data || error.message);
-      res.status(500).json({ message: 'Error scanning file', error: error.message });
+      res.status(500).json({
+        message: 'فشل فحص الملف. ربما تجاوز الحجم أو هناك مشكلة في السيرفر.',
+        error: error.response?.data || error.message
+      });
     }
   } else if (url) {
     try {
@@ -74,10 +84,13 @@ app.post('/scan', upload.single('file'), async (req, res) => {
       res.json(result);
     } catch (error) {
       console.error('Error scanning URL:', error.response?.data || error.message);
-      res.status(500).json({ message: 'Error scanning URL', error: error.message });
+      res.status(500).json({
+        message: 'فشل فحص الرابط. ربما هناك مشكلة في السيرفر.',
+        error: error.response?.data || error.message
+      });
     }
   } else {
-    res.status(400).json({ message: 'No file or URL provided' });
+    res.status(400).json({ message: 'لا يوجد ملف أو رابط مُدخل' });
   }
 });
 
